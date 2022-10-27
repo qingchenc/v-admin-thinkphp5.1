@@ -19,4 +19,8 @@ class Admin
 	public function getVersion(){
 		return $this->version;
 	}
+
+    public function test(){
+        return $this->version;
+    }
 }
