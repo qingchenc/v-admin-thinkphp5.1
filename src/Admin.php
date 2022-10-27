@@ -1,6 +1,6 @@
 <?php
 
-namespace Qing\Admin;
+namespace QingChen\Admin;
 
 use Closure;
 
