@@ -1,6 +1,6 @@
 <?php
 
-namespace Encore\Admin;
+namespace Qing\Admin;
 
 use Closure;
 
