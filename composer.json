@@ -1,5 +1,5 @@
 {
-    "name": "encore/v-admin-thinkphp51",
+    "name": "qing/v-admin-thinkphp51",
     "description": "基于thinkphp5.1版本开发的一款后台管理框架",
     "type": "library",
     "require": {
