@@ -1,0 +1,88 @@
+{extend name="views:index" /}
+{block name="title"}
+<title>{$header}</title>
+{/block}
+
+{block name="body"}
+<div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <div class="layui-col-xs6 layui-col-md10">
+                            <div>{$header}</div>
+                        </div>
+                        <div class="layui-col-xs6 layui-col-md2">
+                            <button class="layui-btn add-list-data">创建</button>
+                        </div>
+                    </div>
+                    <div class="layui-card-body">
+                        <table class="layui-hide" id="test-table-page" lay-filter="test-table-page"></table>
+                        <script type="text/html" id="table-content-list">
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="editData">编辑</a>
+                        </script>
+                        {$imageColumn|raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    myLay.use(['index','table','jquery','layExtension'],function(){
+        let table  = layui.table,layExtension = layui.layExtension,$ = layui.jquery;
+        let column = {$column|raw};
+        console.log(column);
+
+        layExtension.tableRender({
+            elem: '#test-table-page',
+            url: '/admin/order',
+            method: 'get',
+            //开启分页
+            page: true,
+            limit: 20,
+            loading: true,
+            cols: column,
+            callback: function(data){}
+        });
+
+        /**
+         * 表格的操作列中的每个操作项
+         */
+        table.on('tool(test-table-page)', function(obj){
+            //获得当前行数据
+            var lineData = obj.data;
+            //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var layEvent = obj.event;
+            if(layEvent === 'editData'){
+                layer.open({
+                    title:"用户信息",
+                    type: 2,
+                    offset: '10px',
+                    area: ['50%', '80%'],
+                    maxmin: true,
+                    content: '/admin/order/'+lineData.id+'/edit'
+                });
+            }
+        });
+
+        /**
+         * 点击创建
+         */
+        // $(".add-list-data").click(function(){
+        //     layer.open({
+        //         title:"用户信息",
+        //         type: 2,
+        //         offset: '10px',
+        //         area: ['50%', '80%'],
+        //         maxmin: true,
+        //         content: '/admin/auth/user/edit/'
+        //     });
+        // });
+    });
+</script>
+{/block}

@@ -1,0 +1,10 @@
+<?php
+
+use think\facade\Route;
+
+Route::group(config('admin.prefix'),function() {
+    Route::get('/', 'admin/Index/index');
+    Route::get('index', 'admin/Index/index');
+    Route::get('home', 'admin/Index/home');
+
+})->middleware('admin.auth');

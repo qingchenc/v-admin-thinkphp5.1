@@ -1,0 +1,85 @@
+{extend name="views:index" /}
+{block name="title"}
+<title>用户登录</title>
+{/block}
+
+{block name="css"}
+<link rel="stylesheet" href="/vendor/admin/style/login.css" media="all">
+{if condition="$adminBackgroundImageShow"}
+<style type="text/css">
+    body{background: url({$adminBackgroundImage}) no-repeat 100% 100%;}
+</style>
+{/if}
+{/block}
+
+{block name="body"}
+<div class="adminLogin">
+    <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+        <div class="layadmin-user-login-main" style="background-color: #ffffff;border-radius: 5px;">
+            <div class="layadmin-user-login-box layadmin-user-login-header">
+                <h2>{$adminName}</h2>
+                <p></p>
+            </div>
+            <div class="layadmin-user-login-box layadmin-user-login-body">
+                <form class="layui-form" lay-filter="adminUserData">
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                        <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" lay-reqtext="用户名不可为空" placeholder="用户名" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                        <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" lay-reqtext="密码不可为空" placeholder="密码" class="layui-input">
+                    </div>
+                    <div class="layui-form-item" style="margin-bottom: 20px;">
+                        <input type="checkbox" name="remember" lay-skin="primary" title="记住用户名">
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="layui-trans layadmin-user-login-footer"></div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    myLay.use(['index','admin','form'],function() {
+        let form = layui.form, admin = layui.admin;
+
+        if(window.parent[0]){
+            window.parent.location.href = "/admin/auth/login";
+        }
+
+        //从缓存中读取数据信息，避免再次输入
+        let localStorageData = layui.data('vAdmin');
+        if(localStorageData){
+            form.val("adminUserData", {"username": localStorageData.username ? localStorageData.username : ''});
+            form.render();
+        }
+
+        /**
+         * 点击登录
+         */
+        form.on('submit(LAY-user-login-submit)', function(obj){
+            admin.req({
+                url: '/admin/auth/login',
+                method: 'post',
+                data: obj.field,
+                done: function(){
+                    if(obj.field.remember && obj.field.remember == 'on'){
+                        layui.data('vAdmin', {key: 'username', value: obj.field.username});
+                    }
+                    //登入成功的提示与跳转
+                    layer.msg('登入成功', {offset: '15px',icon: 1,time: 1000}, function(){
+                        window.location.href = '/admin/index';
+                    });
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

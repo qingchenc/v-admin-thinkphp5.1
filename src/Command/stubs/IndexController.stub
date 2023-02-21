@@ -1,0 +1,23 @@
+<?php
+
+namespace app\admin\controller;
+
+use QingChen\Admin\Grid;
+use QingChen\Admin\Controller\AdminController;
+
+class Index extends AdminController
+{
+    protected $title = '测试标题';
+
+    public function grid()
+    {
+        // $grid = new Grid(new User());
+        //
+        // $grid->column('id','id')->sort();
+        // $grid->column('username','用户名')->label();
+        // $grid->column('mobile','手机号');
+        // $grid->column('email','邮箱');
+        //
+        // return $grid;
+    }
+}
